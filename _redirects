@@ -1,2 +1,2 @@
-/stream/* http://:splat  200
-/* /index.html 200
+/stream/* http://:splat  200!
+/* /index.html  200
