@@ -10,53 +10,37 @@
         :root { --primary: #00ffcc; --bg: #050505; --surface: #121212; }
         body, html { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; overflow-x: hidden; height: 100%; -webkit-tap-highlight-color: transparent; }
 
-        /* Welcome Loader Animation */
-        #site-loader { 
-            position: fixed; width: 100%; height: 100vh; background: #000; 
-            display: flex; flex-direction: column; justify-content: center; 
-            align-items: center; z-index: 9999; transition: 0.8s ease-in-out;
-        }
-        .loader-content { text-align: center; }
-        .welcome-text {
-            font-size: 3rem; font-weight: 900; letter-spacing: 12px;
-            background: linear-gradient(90deg, #fff, var(--primary), #fff);
-            background-size: 200%; -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shine 2s linear infinite, glow 1.5s ease-in-out infinite alternate;
-            margin-bottom: 20px; text-transform: uppercase;
-        }
-        .loader-bar { width: 200px; height: 2px; background: rgba(255,255,255,0.1); margin: 0 auto; position: relative; border-radius: 10px; overflow: hidden; }
-        .loader-progress { position: absolute; width: 0%; height: 100%; background: var(--primary); box-shadow: 0 0 15px var(--primary); animation: loadProgress 2.5s ease-in-out forwards; }
+        /* Welcome Loader */
+        #site-loader { position: fixed; width: 100%; height: 100vh; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: 0.8s; }
+        .welcome-text { font-size: 3.5rem; font-weight: 900; letter-spacing: 12px; background: linear-gradient(90deg, #fff, var(--primary), #fff); background-size: 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 2s linear infinite; text-transform: uppercase; }
+        .loader-bar { width: 220px; height: 3px; background: rgba(255,255,255,0.1); margin-top: 20px; position: relative; overflow: hidden; }
+        .loader-progress { position: absolute; width: 0%; height: 100%; background: var(--primary); animation: loadProgress 2.5s ease-in-out forwards; }
         @keyframes shine { to { background-position: 200% center; } }
-        @keyframes glow { from { text-shadow: 0 0 5px rgba(0,255,204,0.2); } to { text-shadow: 0 0 20px rgba(0,255,204,0.8); } }
-        @keyframes loadProgress { 0% { width: 0%; } 100% { width: 100%; } }
+        @keyframes loadProgress { to { width: 100%; } }
 
-        /* UI Elements */
-        #main-content { display: none; padding: 20px; height: 100vh; overflow-y: auto; box-sizing: border-box; }
-        header h1 { text-align: center; color: var(--primary); letter-spacing: 5px; margin: 30px 0; font-weight: 800; }
+        /* Content */
+        #main-content { display: none; padding: 20px; }
+        header h1 { text-align: center; color: var(--primary); letter-spacing: 5px; margin: 30px 0; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
         .card { background: var(--surface); border-radius: 12px; cursor: pointer; transition: 0.3s; border: 1px solid transparent; text-align: center; overflow: hidden; }
         .card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .card img { width: 100%; aspect-ratio: 16/9; object-fit: contain; padding: 10px; background: #000; display: block; }
+        .card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: #222; }
+        .card div { padding: 10px; font-weight: bold; font-size: 0.8rem; }
 
-        /* Player Styling */
+        /* Player */
         #player-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 2000; }
-        video { width: 100%; height: 100%; object-fit: contain; }
-        .player-controls { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); padding: 40px 20px 20px; display: flex; align-items: center; gap: 15px; z-index: 2100; box-sizing: border-box; }
-        #chDisp { flex-grow: 1; text-align: center; font-weight: bold; color: var(--primary); text-transform: uppercase; font-size: 1.1rem; }
-        #video-loader { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; z-index: 2050; }
-        .spinner-v { width: 45px; height: 45px; border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        video { width: 100%; height: 100%; }
+        .player-controls { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, #000, transparent); padding: 40px 20px 20px; display: flex; align-items: center; gap: 20px; box-sizing: border-box; }
+        #chDisp { flex-grow: 1; text-align: center; font-weight: bold; color: var(--primary); }
+        .back-btn { position: absolute; top: 20px; left: 20px; color: white; background: rgba(0,0,0,0.6); border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; z-index: 2100; }
+        #v-loader { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; }
     </style>
 </head>
 <body>
 
     <div id="site-loader">
-        <div class="loader-content">
-            <div class="welcome-text">STREAMX</div>
-            <div class="loader-bar"><div class="loader-progress"></div></div>
-            <p style="margin-top: 15px; font-size: 0.7rem; color: #555; letter-spacing: 2px;">PREPARING YOUR CINEMA</p>
-        </div>
+        <div class="welcome-text">STREAMX</div>
+        <div class="loader-bar"><div class="loader-progress"></div></div>
     </div>
 
     <div id="main-content">
@@ -65,27 +49,26 @@
     </div>
 
     <div id="player-page">
-        <div style="position: absolute; top: 20px; left: 20px; z-index: 2100;">
-            <button onclick="closePlayer()" style="background: none; border: none; color: white; cursor: pointer; font-weight: bold;"><i class="fas fa-arrow-left"></i> BACK</button>
-        </div>
-        <div id="video-loader"><div class="spinner-v"></div></div>
+        <button class="back-btn" onclick="closePlayer()"><i class="fas fa-arrow-left"></i> BACK</button>
+        <div id="v-loader"><i class="fas fa-circle-notch fa-spin fa-3x" style="color:var(--primary)"></i></div>
         <video id="video" playsinline></video>
         <div class="player-controls">
-            <button onclick="togglePlay()" id="playPauseBtn" style="background:none; border:none; color:white; cursor:pointer; font-size:1.3rem;"><i class="fas fa-pause"></i></button>
-            <div id="chDisp">SELECT CHANNEL</div>
-            <button onclick="toggleFullScreen()" style="background:none; border:none; color:white; cursor:pointer; font-size:1.3rem;"><i class="fas fa-expand"></i></button>
+            <i class="fas fa-pause" id="pp" onclick="togglePlay()" style="cursor:pointer; font-size:1.5rem;"></i>
+            <div id="chDisp">CHANNEL NAME</div>
+            <i class="fas fa-expand" onclick="toggleFS()" style="cursor:pointer; font-size:1.5rem;"></i>
         </div>
     </div>
 
     <script>
+        // STABLE PUBLIC LINKS (Inhe update karne ki zaroorat nahi padegi jaldi)
         const channels = [
-            // Note: These links might expire, replace with your active links
-            { name: "Sony Max", logo: "https://i.postimg.cc/q7SjH9P8/sony-max.png", url: "http://45.155.226.133:8085/india/in-uk/Sony-Max/mono.m3u8?md5=z_pluzBukSsOLclQUmR7Fg&expires=1768758832&type=a1&info=65fe5d27e91a3cec" },
-            { name: "Sample HD", logo: "https://vjs.zencdn.net/v/oceans.png", url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" }
+            { name: "Test Stream HD", logo: "https://vjs.zencdn.net/v/oceans.png", url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" },
+            { name: "DD National", logo: "https://upload.wikimedia.org/wikipedia/commons/0/03/DD_National_logo.png", url: "https://linearjitp-playback.akamaized.net/demo/jitp/dd1/master.m3u8" },
+            { name: "News 24", logo: "https://via.placeholder.com/300x169/121212/00ffcc?text=NEWS+24", url: "https://news24-news24-1-in.samsung.wurl.com/manifest/playlist.m3u8" }
         ];
 
         const video = document.getElementById('video');
-        const vLoader = document.getElementById('video-loader');
+        const vLoader = document.getElementById('v-loader');
         let hls = null;
 
         window.onload = () => {
@@ -94,29 +77,26 @@
                 setTimeout(() => {
                     document.getElementById('site-loader').style.display = 'none';
                     document.getElementById('main-content').style.display = 'block';
-                    draw(channels);
+                    draw();
                 }, 800);
             }, 3000);
         };
 
-        function draw(data) {
+        function draw() {
             const grid = document.getElementById('grid');
-            grid.innerHTML = '';
-            data.forEach(ch => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `<img src="${ch.logo}" onerror="this.src='https://via.placeholder.com/300x169/121212/00ffcc?text=LOGO'"><div>${ch.name}</div>`;
-                card.onclick = () => openChannel(ch.url, ch.name);
-                grid.appendChild(card);
-            });
+            grid.innerHTML = channels.map(ch => `
+                <div class="card" onclick="openCh('${ch.url}', '${ch.name}')">
+                    <img src="${ch.logo}" onerror="this.src='https://via.placeholder.com/300x169/222/00ffcc?text=${ch.name}'">
+                    <div>${ch.name}</div>
+                </div>
+            `).join('');
         }
 
-        function openChannel(url, name) {
+        function openCh(url, name) {
             document.getElementById('player-page').style.display = 'block';
             document.getElementById('chDisp').innerText = name;
             vLoader.style.display = 'block';
             
-            // PROXY LOGIC FOR NETLIFY
             let finalUrl = url;
             if (window.location.protocol === 'https:' && url.startsWith('http:')) {
                 finalUrl = "/stream/" + url.replace("http://", "");
@@ -127,14 +107,18 @@
                 hls = new Hls();
                 hls.loadSource(finalUrl);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => video.play().catch(() => { video.muted = true; video.play(); }));
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    video.play().catch(() => { video.muted = true; video.play(); });
+                });
                 video.onplaying = () => vLoader.style.display = 'none';
-                hls.on(Hls.Events.ERROR, () => vLoader.style.display = 'none');
             }
         }
 
-        function togglePlay() { video.paused ? video.play() : video.pause(); }
-        function toggleFullScreen() { !document.fullscreenElement ? document.getElementById('player-page').requestFullscreen() : document.exitFullscreen(); }
+        function togglePlay() { 
+            video.paused ? video.play() : video.pause(); 
+            document.getElementById('pp').className = video.paused ? 'fas fa-play' : 'fas fa-pause';
+        }
+        function toggleFS() { !document.fullscreenElement ? document.getElementById('player-page').requestFullscreen() : document.exitFullscreen(); }
         function closePlayer() { document.getElementById('player-page').style.display = 'none'; video.pause(); if (hls) hls.destroy(); }
     </script>
 </body>
