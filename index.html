@@ -10,65 +10,106 @@
         :root { --primary: #00ffcc; --bg: #050505; --surface: #121212; }
         body, html { margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: white; overflow-x: hidden; height: 100%; -webkit-tap-highlight-color: transparent; }
 
-        /* Welcome Loader */
-        #site-loader { position: fixed; width: 100%; height: 100vh; background: #000; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; transition: 0.8s; }
-        .welcome-text { font-size: 3.5rem; font-weight: 900; letter-spacing: 12px; background: linear-gradient(90deg, #fff, var(--primary), #fff); background-size: 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shine 2s linear infinite; text-transform: uppercase; }
-        .loader-bar { width: 220px; height: 3px; background: rgba(255,255,255,0.1); margin-top: 20px; position: relative; overflow: hidden; }
-        .loader-progress { position: absolute; width: 0%; height: 100%; background: var(--primary); animation: loadProgress 2.5s ease-in-out forwards; }
+        /* Welcome Loader Styling */
+        #site-loader { 
+            position: fixed; width: 100%; height: 100vh; background: #000; 
+            display: flex; flex-direction: column; justify-content: center; 
+            align-items: center; z-index: 9999; transition: 0.8s ease-in-out;
+        }
+        .loader-content { text-align: center; }
+        .welcome-text {
+            font-size: 3.5rem; font-weight: 900; letter-spacing: 15px;
+            background: linear-gradient(90deg, #fff, var(--primary), #fff);
+            background-size: 200%; -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 2s linear infinite, glow 1.5s ease-in-out infinite alternate;
+            margin-bottom: 20px; text-transform: uppercase;
+        }
+        .loader-bar {
+            width: 200px; height: 2px; background: rgba(255,255,255,0.1);
+            margin: 0 auto; position: relative; border-radius: 10px; overflow: hidden;
+        }
+        .loader-progress {
+            position: absolute; width: 0%; height: 100%;
+            background: var(--primary); box-shadow: 0 0 15px var(--primary);
+            animation: loadProgress 2.5s ease-in-out forwards;
+        }
         @keyframes shine { to { background-position: 200% center; } }
-        @keyframes loadProgress { to { width: 100%; } }
+        @keyframes glow { from { text-shadow: 0 0 5px rgba(0,255,204,0.2); } to { text-shadow: 0 0 20px rgba(0,255,204,0.8); } }
+        @keyframes loadProgress { 0% { width: 0%; } 100% { width: 100%; } }
 
-        /* Content */
-        #main-content { display: none; padding: 20px; }
-        header h1 { text-align: center; color: var(--primary); letter-spacing: 5px; margin: 30px 0; }
+        /* UI Elements */
+        #main-content { display: none; padding: 20px; height: 100vh; overflow-y: auto; box-sizing: border-box; }
+        header h1 { text-align: center; letter-spacing: 5px; color: var(--primary); margin: 30px 0; font-weight: 800; font-size: 2rem; }
+        .search-box { max-width: 500px; margin: 0 auto 30px; }
+        #searchBar { width: 100%; padding: 15px 25px; border-radius: 50px; border: 1px solid #333; background: var(--surface); color: white; outline: none; box-sizing: border-box; font-size: 16px; }
+
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 20px; max-width: 1200px; margin: auto; }
+        @media (max-width: 480px) { .grid { grid-template-columns: 1fr 1fr; gap: 10px; } }
+
         .card { background: var(--surface); border-radius: 12px; cursor: pointer; transition: 0.3s; border: 1px solid transparent; text-align: center; overflow: hidden; }
         .card:hover { transform: translateY(-5px); border-color: var(--primary); }
-        .card img { width: 100%; aspect-ratio: 16/9; object-fit: cover; background: #222; }
-        .card div { padding: 10px; font-weight: bold; font-size: 0.8rem; }
+        .card img { width: 100%; aspect-ratio: 16/9; object-fit: contain; padding: 10px; box-sizing: border-box; background: #000; display: block; }
+        .card div { padding: 10px; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; }
 
-        /* Player */
+        /* Player Styling */
         #player-page { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: #000; z-index: 2000; }
-        video { width: 100%; height: 100%; }
-        .player-controls { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, #000, transparent); padding: 40px 20px 20px; display: flex; align-items: center; gap: 20px; box-sizing: border-box; }
-        #chDisp { flex-grow: 1; text-align: center; font-weight: bold; color: var(--primary); }
-        .back-btn { position: absolute; top: 20px; left: 20px; color: white; background: rgba(0,0,0,0.6); border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; z-index: 2100; }
-        #v-loader { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; }
+        video { width: 100%; height: 100%; object-fit: contain; }
+        .top-bar { position: absolute; top: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent); z-index: 2100; opacity: 0; transition: 0.3s; }
+        #player-page:hover .top-bar { opacity: 1; }
+        .back-btn { background: none; border: none; color: white; font-size: 1rem; cursor: pointer; font-weight: bold; }
+        .player-controls { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent); padding: 60px 20px 20px; display: flex; align-items: center; gap: 15px; opacity: 0; transition: opacity 0.3s; z-index: 2100; box-sizing: border-box; }
+        #player-page:hover .player-controls { opacity: 1; }
+        .control-btn { background: none; border: none; color: white; cursor: pointer; font-size: 1.3rem; width: 35px; }
+        #chDisp { flex-grow: 1; text-align: center; font-weight: bold; color: var(--primary); text-transform: uppercase; }
+        #video-loader { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: none; z-index: 2050; }
+        .spinner-v { width: 45px; height: 45px; border: 3px solid rgba(255,255,255,0.1); border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <div id="site-loader">
-        <div class="welcome-text">STREAMX</div>
-        <div class="loader-bar"><div class="loader-progress"></div></div>
+        <div class="loader-content">
+            <div class="welcome-text">STREAMX</div>
+            <div class="loader-bar"><div class="loader-progress"></div></div>
+            <p style="margin-top: 15px; font-size: 0.7rem; color: #555;">PREPARING YOUR CINEMA</p>
+        </div>
     </div>
 
     <div id="main-content">
         <header><h1>STREAM<span style="color:#fff">X</span></h1></header>
+        <div class="search-box"><input type="text" id="searchBar" placeholder="Search Channels..." onkeyup="filter()"></div>
         <div id="grid" class="grid"></div>
     </div>
 
     <div id="player-page">
-        <button class="back-btn" onclick="closePlayer()"><i class="fas fa-arrow-left"></i> BACK</button>
-        <div id="v-loader"><i class="fas fa-circle-notch fa-spin fa-3x" style="color:var(--primary)"></i></div>
+        <div class="top-bar"><button class="back-btn" onclick="closePlayer()"><i class="fas fa-arrow-left"></i> BACK</button></div>
+        <div id="video-loader"><div class="spinner-v"></div></div>
         <video id="video" playsinline></video>
         <div class="player-controls">
-            <i class="fas fa-pause" id="pp" onclick="togglePlay()" style="cursor:pointer; font-size:1.5rem;"></i>
-            <div id="chDisp">CHANNEL NAME</div>
-            <i class="fas fa-expand" onclick="toggleFS()" style="cursor:pointer; font-size:1.5rem;"></i>
+            <button class="control-btn" onclick="togglePlay()" id="playPauseBtn"><i class="fas fa-pause"></i></button>
+            <div id="chDisp">SELECT CHANNEL</div>
+            <button class="control-btn" onclick="toggleFullScreen()"><i class="fas fa-expand"></i></button>
         </div>
     </div>
 
     <script>
-        // STABLE PUBLIC LINKS (Inhe update karne ki zaroorat nahi padegi jaldi)
+        // Updated working test links
         const channels = [
-            { name: "Test Stream HD", logo: "https://vjs.zencdn.net/v/oceans.png", url: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" },
-            { name: "DD National", logo: "https://upload.wikimedia.org/wikipedia/commons/0/03/DD_National_logo.png", url: "https://linearjitp-playback.akamaized.net/demo/jitp/dd1/master.m3u8" },
-            { name: "News 24", logo: "https://via.placeholder.com/300x169/121212/00ffcc?text=NEWS+24", url: "https://news24-news24-1-in.samsung.wurl.com/manifest/playlist.m3u8" }
+            { name: "Sony Max", logo: "https://i.postimg.cc/q7SjH9P8/sony-max.png", url: "http://45.155.226.133:8085/india/in-uk/Sony-Max/mono.m3u8?md5=z_pluzBukSsOLclQUmR7Fg&expires=1768758832&type=a1&info=65fe5d27e91a3cec" },
+            { name: "Zee Cinema", logo: "https://i.postimg.cc/vH0KzRCH/zee-cinema.png", url: "http://45.155.226.147:8085/india/in-uk/Zee-Cinema/mono.m3u8?md5=_QjagK72ZGwoYyTihqwBoQ&expires=1768760632&type=a1&info=65fe5d27e91a3cec" },
+            { name: "Star Gold", logo: "https://i.postimg.cc/mD3B4j0t/star-gold.png", url: "http://45.155.226.147:8085/india/in-s/Star-Gold/mono.m3u8?md5=hgCbib__jRlV-8qqZP5jWw&expires=1768762322&type=a1&info=65fe5d27e91a3cec" },
+            { name: "Star Sports 1", logo: "https://i.postimg.cc/fLsFm1W4/star-sports.png", url: "http://103.163.132.12:8085/india/in-s/Star-Sports-1-HD-IND/mono.m3u8?md5=IXcmJ5ZDmVxZn-iLmGSN6w&expires=1768762314&type=a1&info=65fe5d27e91a3cec" },
+            { name: "Sony TV HD", logo: "https://i.postimg.cc/fyP8m6Rz/sony-tv.png", url: "http://45.155.226.139:8085/india/in-s/Sony-TV-HD/mono.m3u8?md5=6-gN_5a7hJSDF379ki4A1A&expires=1768762282&type=a1&info=65fe5d27e91a3cec" },
+            { name: "Zee TV HD", logo: "https://i.postimg.cc/6p2M8H0y/zee-tv.png", url: "http://103.163.132.13:8085/india/in-s/Zee-TV-HD/mono.m3u8?md5=WfV4QFjmxvlCUdWVVlZTMg&expires=1768762250&type=a1&info=65fe5d27e91a3cec" },
+            { name: "Star Plus", logo: "https://i.postimg.cc/637tX0yG/star-plus.png", url: "http://45.155.226.139:8085/india/in-s/Star-Plus/mono.m3u8?md5=cRRcMgecfYsBANHhmrO_kw&expires=1768762940&type=a1&info=65fe5d27e91a3cec" },
+            { name: "Sony Pal", logo: "https://i.postimg.cc/85z1Z7qB/sony-pal.png", url: "http://45.155.226.139:8085/india/in-s/SONY-PAL/mono.m3u8?md5=QmCUeA0kqgmlmqq5b1Rd7Q&expires=1768762950&type=a1&info=65fe5d27e91a3cec" },
+            { name: "Zee TV UK", logo: "https://i.postimg.cc/6p2M8H0y/zee-tv.png", url: "http://103.163.132.13:8085/india/in-uk/Zee-TV/mono.m3u8?md5=pW_mxXLp0hzBHWeMPcc0xg&expires=1768762912&type=a1&info=65fe5d27e91a3cec" }
         ];
 
         const video = document.getElementById('video');
-        const vLoader = document.getElementById('v-loader');
+        const vLoader = document.getElementById('video-loader');
         let hls = null;
 
         window.onload = () => {
@@ -77,26 +118,34 @@
                 setTimeout(() => {
                     document.getElementById('site-loader').style.display = 'none';
                     document.getElementById('main-content').style.display = 'block';
-                    draw();
                 }, 800);
+                draw(channels);
             }, 3000);
         };
 
-        function draw() {
+        function draw(data) {
             const grid = document.getElementById('grid');
-            grid.innerHTML = channels.map(ch => `
-                <div class="card" onclick="openCh('${ch.url}', '${ch.name}')">
-                    <img src="${ch.logo}" onerror="this.src='https://via.placeholder.com/300x169/222/00ffcc?text=${ch.name}'">
-                    <div>${ch.name}</div>
-                </div>
-            `).join('');
+            grid.innerHTML = '';
+            data.forEach(ch => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `<img src="${ch.logo}" onerror="this.src='https://via.placeholder.com/300x169/121212/00ffcc?text=LOGO'"><div>${ch.name}</div>`;
+                card.onclick = () => openChannel(ch.url, ch.name);
+                grid.appendChild(card);
+            });
         }
 
-        function openCh(url, name) {
+        function filter() {
+            const q = document.getElementById('searchBar').value.toLowerCase();
+            draw(channels.filter(c => c.name.toLowerCase().includes(q)));
+        }
+
+        function openChannel(url, name) {
             document.getElementById('player-page').style.display = 'block';
             document.getElementById('chDisp').innerText = name;
             vLoader.style.display = 'block';
             
+            // Fix for Netlify (HTTPS to HTTP proxy)
             let finalUrl = url;
             if (window.location.protocol === 'https:' && url.startsWith('http:')) {
                 finalUrl = "/stream/" + url.replace("http://", "");
@@ -107,19 +156,28 @@
                 hls = new Hls();
                 hls.loadSource(finalUrl);
                 hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    video.play().catch(() => { video.muted = true; video.play(); });
-                });
+                hls.on(Hls.Events.MANIFEST_PARSED, () => video.play().catch(() => { video.muted = true; video.play(); }));
                 video.onplaying = () => vLoader.style.display = 'none';
+                hls.on(Hls.Events.ERROR, (e, data) => { if(data.fatal) vLoader.style.display = 'none'; });
             }
         }
 
-        function togglePlay() { 
-            video.paused ? video.play() : video.pause(); 
-            document.getElementById('pp').className = video.paused ? 'fas fa-play' : 'fas fa-pause';
+        function togglePlay() {
+            if (video.paused) { video.play(); document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-pause"></i>'; }
+            else { video.pause(); document.getElementById('playPauseBtn').innerHTML = '<i class="fas fa-play"></i>'; }
         }
-        function toggleFS() { !document.fullscreenElement ? document.getElementById('player-page').requestFullscreen() : document.exitFullscreen(); }
-        function closePlayer() { document.getElementById('player-page').style.display = 'none'; video.pause(); if (hls) hls.destroy(); }
+
+        function toggleFullScreen() {
+            const elem = document.getElementById('player-page');
+            if (!document.fullscreenElement) elem.requestFullscreen();
+            else document.exitFullscreen();
+        }
+        
+        function closePlayer() {
+            document.getElementById('player-page').style.display = 'none';
+            video.pause();
+            if (hls) hls.destroy();
+        }
     </script>
 </body>
 </html>
